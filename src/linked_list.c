@@ -71,7 +71,7 @@ struct llnode* linkedlist_getnode(llist *slist, unsigned int index)
 }
 int linkedlist_search(llist *slist, void *data, boolean (*data_equ)(void *data_a, void *data_b))
 {
-    if(linkedlist_isempty) return -1;
+    if(!linkedlist_isempty) return -1;
     int counter;
     node *tmp;
     tmp = slist->head;
@@ -82,7 +82,7 @@ int linkedlist_search(llist *slist, void *data, boolean (*data_equ)(void *data_a
         tmp = tmp->next;
         counter++;
     }
-    return -1;
+    return -2;
 }
 void linkedlist_insert(llist *ilist, unsigned int index, void *data)
 {
@@ -113,15 +113,35 @@ void linkedlist_insert(llist *ilist, unsigned int index, void *data)
     }
     ilist->size++;
 }
-void linkedlist_remove(llist *rlinst, unsigned int index)
+void linkedlist_remove(llist *rlist, unsigned int index)
 {
-    if(linkedlist_isempty) return;
-    node *tmp;
-    tmp = linkedlist_getnode(rlinst, index);
-
+    if(!linkedlist_isempty) return;
+    if(index == 0)
+        if(rlist->size == 1)//after delete, it is empty!
+        {
+            free(rlist->head);
+            rlist->head = NULL;
+            rlist->tail = NULL;
+        }
+        else
+        {
+            node *tmp;
+            tmp = rlist->head;
+            rlist->head = rlist->head->next;
+            free(tmp);
+        }
+    else
+    {
+        node *tmp, *tmp_d;
+        tmp = linkedlist_getnode(rlist, index - 1);
+        tmp_d = tmp->next;
+        tmp->next = tmp->next->next;
+        free(tmp_d);
+    }
+    rlist->size -= 1;
 }
-boolean linkedlist_isempty(llist *ielinst)
+boolean linkedlist_isempty(llist *ielist)
 {
-    if(ielinst->head == NULL) return 1;//true
+    if(ielist->head == NULL) return 1;//true
     else return 0;//false
 }
