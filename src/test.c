@@ -2,6 +2,7 @@
 #include "linked_list.h"
 void free_data(void *data)
 {
+    printf("delete %i\n", *((int*)data));
     return;
 }
 void free_print(void *data)
@@ -33,7 +34,10 @@ int main(int argc, char **argv)
     linkedlist_insert(list, list->size - 1,&z);
     linkedlist_print(list, free_print);
 
-    printf("search z=5 %i", linkedlist_search(list, &z, data_equ));
+    linkedlist_remove(list, 4);
+    linkedlist_print(list, free_print);
+
+    printf("search z=5\nindex = %i\n", linkedlist_search(list, &z, data_equ));
     linkedlist_destroy(list, free_data);
     printf("\nEnd Of Program!!");
     return 0;

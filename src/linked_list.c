@@ -137,6 +137,11 @@ void linkedlist_remove(llist *rlist, unsigned int index)
         tmp_d = tmp->next;
         tmp->next = tmp->next->next;
         free(tmp_d);
+        if(index == rlist->size - 1)
+        {
+            rlist->tail = tmp->next;
+            rlist->tail = NULL;
+        }
     }
     rlist->size -= 1;
 }
