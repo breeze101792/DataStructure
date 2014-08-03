@@ -1,7 +1,7 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "hash_table.h"
 #include "linked_list.h"
-
 /*
 typedef struct htnode
 {
@@ -21,17 +21,18 @@ static inline node* htnode_create(void *data)
 htable* hashtable_create(unsigned int size)
 {
     int counter;
-    htable *new_table;
-    new_table = malloc(sizeof(htable));
-    new_table->table = malloc(sizeof(struct linkedlist) * size);
-    new_table->size = size;
-    counter = 0;
-    while(counter < size)
+    htable *new_httable;
+    new_httable = malloc(sizeof(htable));
+    new_httable->size = size;
+    new_httable->table = malloc(sizeof(struct linkedlist) * size);
+
+    for(counter = 0;counter < size;counter++)
     {
-        linkedlist_init(new_table->table + counter);
-        counter++;
+        linkedlist_init(new_httable->table + counter);
+        printf("linkedlist init: %i\n", counter);
     }
-    return new_table;
+
+    return new_httable;
 }
 //TODO check if it work
 void hashtable_destory(htable *dtable, void (data_free)(void *data))
@@ -43,17 +44,18 @@ void hashtable_destory(htable *dtable, void (data_free)(void *data))
         linkedlist_destroy(dtable->table + counter, data_free);
     }
     free(dtable);
-}//TODO
+}
 void hashtable_add(htable *atable, void *data)
 {
-
     int index;
     struct linkedlist *ilist;
     index = hashtable_hash(atable->size, data);
-    ilist = atable->table + (index - 1);
-    linkedlist_insert(ilist, ilist->size - 1, data);
+    ilist = atable->table + index;
+    linkedlist_insert(ilist, ilist->size, data);
 }
 unsigned int hashtable_hash(unsigned int size, void *data)
 {
-    return *((unsigned int*)data) / size;
+    printf("hasht function: %u\n", *((unsigned int*)data) % size);
+    fflush(stdout);
+    return *((unsigned int*)data) % size;
 }
