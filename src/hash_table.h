@@ -13,6 +13,7 @@ htable* hashtable_create(unsigned int size);
 void hashtable_destory(htable *dtable, void (data_free)(void *data));
 unsigned int hashtable_hash(unsigned int size, void *data);
 void hashtable_add(htable *atable, void *data);
+void hashtable_print(htable *atable, void (*data_print)(void *data));
 
 
 
